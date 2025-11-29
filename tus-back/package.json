@@ -1,0 +1,19 @@
+{
+  "name": "tus-back",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@tus/file-store": "^2.0.0",
+    "@tus/s3-store": "^2.0.1",
+    "@tus/server": "^2.3.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}

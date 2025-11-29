@@ -1,0 +1,60 @@
+# --- ANDROID / KOTLIN ---
+*.iml
+.gradle/
+local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+
+# Android build files
+/build
+/app/build
+/captures/
+
+# Generated files
+*.apk
+*.aar
+*.ap_
+*.dex
+
+# Signing keys
+*.jks
+*.keystore
+
+# Jetpack Compose previews
+.previews
+
+# --- NODE / EXPRESS BACKEND ---
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+dist/
+build/
+.dockerignore
+
+# Env files (Sensitive)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+
+# --- S3, Cache, Upload temp ---
+files/
+cache/
+tmp/
+uploads/
