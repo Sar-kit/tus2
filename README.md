@@ -1,5 +1,5 @@
-The app has a basic form used to upload files to a s3 bucket. Has some pause/resume functionality that work to some extent.
-Mocking the db.
+The app has a basic form used to upload files to a s3 bucket. Has some pause/resume functionality that works to some extent.
+Mocking the db. and everythings on local
 
 
 # 📱 Android Media Upload App + 🖥️ Node.js + TUS + S3 Backend
