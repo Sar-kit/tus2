@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.AppConfig
+import com.example.myapplication.compress.CompressionManager
 import kotlinx.coroutines.launch
 import com.example.myapplication.network.ApiService
 import com.example.myapplication.network.CreateFormRequest
@@ -39,13 +40,46 @@ fun FormScreen(
         mutableStateMapOf<Uri, UploadItemState>()
     }
 
+    val compressionManager = remember { CompressionManager(context) }
+
+
     // File picker launcher
     val pickFilesLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
             if (uris != null) {
                 files = uris
                 uris.forEach { uri ->
-                    uploadState[uri] = UploadItemState()
+
+                    // Create UI state
+                    val state = UploadItemState()
+                    uploadState[uri] = state
+
+                    // Detect mime type
+                    val mimeType = context.contentResolver.getType(uri)
+
+                    // If it's an image → compress immediately
+                    if (mimeType?.startsWith("image") == true) {
+                        scope.launch {
+                            state.status = "Compressing…"
+                            state.isCompressing = true
+
+                            val compressedUri = compressionManager.compressImage(
+                                uri,
+                                onStart = {
+                                    state.isCompressing = true
+                                    state.status = "Compressing…"
+                                },
+                                onComplete = { compressedUri, beforeKb, afterKb ->
+                                    state.isCompressing = false
+                                    state.status = "Compressed: ${beforeKb}KB → ${afterKb}KB"
+                                    state.compressedUri = compressedUri     // ✅ THIS NOW WORKS
+                                }
+                            )
+                        }
+                    } else {
+                        // Non-image
+                        state.status = "Ready"
+                    }
                 }
             }
         }
@@ -183,10 +217,15 @@ class UploadItemState(
     uploaded: Long = 0,
     total: Long = 0,
     status: String = "Pending",
-    url: String? = null
+    url: String? = null,
+    compressedUri: Uri? = null,
+    isCompressing: Boolean = false
 ) {
     var uploaded by mutableStateOf(uploaded)
     var total by mutableStateOf(total)
     var status by mutableStateOf(status)
     var url by mutableStateOf(url)
+    var compressedUri by mutableStateOf(compressedUri)
+
+    var isCompressing by mutableStateOf(isCompressing)
 }
